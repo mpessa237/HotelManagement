@@ -4,14 +4,12 @@ import com.example.bankApplication.configuration.common.ApiResponse;
 import com.example.bankApplication.dto.ClientReqDTO;
 import com.example.bankApplication.service.ClientService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/client")
+@RequestMapping("/auth")
 public class ClientController {
     private final ClientService clientService;
 
@@ -19,9 +17,16 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    @PostMapping
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    @PostMapping("/register/client")
     public ResponseEntity<ApiResponse> save(@RequestBody @Validated ClientReqDTO clientReqDTO){
         var client = clientService.registerClient(clientReqDTO);
         return ResponseEntity.ok(new ApiResponse("client register successfully",client.getFirstname()));
+    }
+
+    @DeleteMapping("/{clientId}")
+    public ResponseEntity<ApiResponse> delete(@PathVariable Integer clientId){
+        clientService.delete(clientId);
+        return ResponseEntity.ok(new ApiResponse("client deleted successfully",null));
     }
 }

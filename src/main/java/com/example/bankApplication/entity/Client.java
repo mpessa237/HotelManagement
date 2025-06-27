@@ -21,8 +21,11 @@ public class Client {
     private String firstname;
     private String lastname;
     private String email;
-    private Integer phone;
+    private String password;
+    private String phone;
     private String address;
+    private Boolean enabled = false;
+    private Boolean accountLocked = false;
 
     @OneToMany(mappedBy = "client",cascade = CascadeType.ALL)
     private Set<Reservation> reservations = new HashSet<>();

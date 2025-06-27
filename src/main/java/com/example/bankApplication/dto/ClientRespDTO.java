@@ -11,7 +11,8 @@ public class ClientRespDTO {
     private Integer clientId;
     private String firstname;
     private String lastname;
+    private String password;
     private String email;
-    private Integer phone;
+    private String phone;
     private String address;
 }

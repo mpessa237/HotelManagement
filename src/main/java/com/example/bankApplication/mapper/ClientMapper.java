@@ -12,6 +12,7 @@ public class ClientMapper {
         Client client = new Client();
         client.setFirstname(clientReqDTO.getFirstname());
         client.setLastname(clientReqDTO.getLastname());
+        client.setPassword(clientReqDTO.getPassword());
         client.setEmail(clientReqDTO.getEmail());
         client.setPhone(clientReqDTO.getPhone());
         client.setAddress(clientReqDTO.getAddress());
@@ -24,6 +25,7 @@ public class ClientMapper {
         clientRespDTO.setClientId(client.getClientId());
         clientRespDTO.setFirstname(client.getFirstname());
         clientRespDTO.setLastname(client.getLastname());
+        clientRespDTO.setPassword(client.getPassword());
         clientRespDTO.setEmail(client.getEmail());
         clientRespDTO.setPhone(client.getPhone());
         clientRespDTO.setAddress(client.getAddress());

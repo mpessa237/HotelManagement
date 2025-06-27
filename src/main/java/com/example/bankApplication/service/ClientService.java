@@ -1,5 +1,4 @@
 package com.example.bankApplication.service;
-
 import com.example.bankApplication.dto.ClientReqDTO;
 import com.example.bankApplication.dto.ClientRespDTO;
 import com.example.bankApplication.entity.Client;
@@ -8,6 +7,7 @@ import com.example.bankApplication.entity.User;
 import com.example.bankApplication.mapper.ClientMapper;
 import com.example.bankApplication.repository.ClientRepo;
 import com.example.bankApplication.repository.UserRepo;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,14 +34,19 @@ public class ClientService {
         User user = new User();
         user.setFirstname(savedClient.getFirstname());
         user.setLastname(savedClient.getLastname());
+        user.setPassword(passwordEncoder.encode(savedClient.getEmail() + LocalDateTime.now().getYear()));
         user.setEmail(savedClient.getEmail());
-        user.setPassword(passwordEncoder.encode(savedClient.getPhone() + "FMH" + LocalDateTime.now().getYear()));
+        user.setEnabled(false);
+        user.setAccountLocked(false);
         user.setRoles(Set.of(Role.ROLE_CUSTOMER));
 
         userRepo.save(user);
         return clientMapper.toDto(savedClient);
+    }
 
-
-
+    public void delete(Integer clientId){
+        clientRepo.findById(clientId)
+                .orElseThrow(()->new EntityNotFoundException("client not found!!"));
+        clientRepo.deleteById(clientId);
     }
 }
